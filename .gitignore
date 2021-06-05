@@ -2,6 +2,8 @@
 [Dd]ebug/
 [Rr]elease/
 
+.vs/
+
 *.rsuser
 *.suo
 *.user

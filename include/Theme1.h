@@ -3,12 +3,11 @@
 
 namespace suppositio {
 
-class Theme1 : public Base_theme {
+class Theme1 : public Base_theme<Theme1> {
 public:
-	virtual double curve_red(double curve_arg) const override;
-	virtual double curve_green(double curve_arg) const override;
-	virtual double curve_blue(double curve_arg) const override;
-	virtual ~Theme1() = default;
+	double curve_red(double curve_arg) const;
+	double curve_green(double curve_arg) const;
+	double curve_blue(double curve_arg) const;
 };
 
 } // suppositio

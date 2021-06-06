@@ -9,7 +9,7 @@ namespace suppositio {
 
 template <typename Th>
 class Palette : public Base_palette {
-	static_assert(std::is_base_of<Base_theme, Th>(), "Invalid palette theme class");
+	static_assert(std::is_base_of<Base_theme<Th>, Th>(), "Invalid palette theme class");
 public:
 	Palette(int max_value) :
 		max_value_{ max_value }, colors_(max_value_) {

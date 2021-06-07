@@ -30,9 +30,9 @@ protected:
 			double curve_arg = static_cast<double>(i) / max_value_;
 			static constexpr auto max_color_channel =
 				std::numeric_limits<uint8_t>::max();
-			colors_.at(i).red = max_color_channel * (theme_.curve_red(curve_arg));
-			colors_.at(i).green = max_color_channel * (theme_.curve_green(curve_arg));
-			colors_.at(i).blue = max_color_channel * (theme_.curve_blue(curve_arg));
+			colors_.at(i).red = static_cast<uint8_t>(max_color_channel * (theme_.curve_red(curve_arg)));
+			colors_.at(i).green = static_cast<uint8_t>(max_color_channel * (theme_.curve_green(curve_arg)));
+			colors_.at(i).blue = static_cast<uint8_t>(max_color_channel * (theme_.curve_blue(curve_arg)));
 		}
 	}
 };

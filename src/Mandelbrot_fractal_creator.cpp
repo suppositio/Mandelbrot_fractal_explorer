@@ -81,7 +81,7 @@ void Mandelbrot_fractal_creator<Pix_t>::init() {
 
 template <typename Pix_t>
 void Mandelbrot_fractal_creator<Pix_t>::update_max_iterations() {
-	max_iterations_ = palette_size_ * std::log(1 / scale_) + 2;
+	max_iterations_ = static_cast<int>(palette_size_ * std::log(1 / scale_) + 2);
 }
 
 template <typename Pix_t>
@@ -103,7 +103,7 @@ int Mandelbrot_fractal_creator<Pix_t>::iterations(World_coords coords) {
 	}
 	static const Coord_t ln2 = std::log(2.0);
 	return iterations = ((iterations >= max_iterations_) ? max_iterations_ :
-		iterations - std::log((std::log(z.real() * z.real() + z.imag() * z.imag()) / ln2) / ln2));
+		static_cast<int>(iterations - std::log((std::log(z.real() * z.real() + z.imag() * z.imag()) / ln2) / ln2)));
 }
 
 template <typename Pix_t>

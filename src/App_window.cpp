@@ -6,17 +6,17 @@ namespace suppositio {
 
 template <typename Pix_t, uint32_t Pix_f>
 App_window<Pix_t, Pix_f>::App_window(const std::string& title, const std::shared_ptr<Buffer<Pix_t>>& buffer) :
-	title_{ title }, buffer_{ buffer }, width_{ buffer_->get_width() }, height_{ buffer_->get_height() } {
+	Base_app_window<Pix_t>(title, buffer) {
 	init();
 }
 
 template <typename Pix_t, uint32_t Pix_f>
 void App_window<Pix_t, Pix_f>::draw() {
-	SDL_UpdateTexture(texture_, nullptr, buffer_->get_raw(), width_ * sizeof(Pix_t));
+	SDL_UpdateTexture(texture_, nullptr, this->buffer_->get_raw(), this->width_ * sizeof(Pix_t));
 	SDL_RenderClear(renderer_);
 	SDL_RenderCopy(renderer_, texture_, nullptr, nullptr);
 	SDL_RenderPresent(renderer_);
-	buffer_->set_need_redraw(false);
+	this->buffer_->set_need_redraw(false);
 }
 
 template <typename Pix_t, uint32_t Pix_f>
@@ -40,11 +40,11 @@ void App_window<Pix_t, Pix_f>::init() {
 	}
 
 	window_ = SDL_CreateWindow(
-		title_.c_str(),
+		this->title_.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		width_,
-		height_,
+		this->width_,
+		this->height_,
 		SDL_WINDOW_SHOWN);
 
 	if (!window_) {
@@ -64,8 +64,8 @@ void App_window<Pix_t, Pix_f>::init() {
 		renderer_,
 		Pix_f,
 		SDL_TEXTUREACCESS_STATIC,
-		width_,
-		height_);
+		this->width_,
+		this->height_);
 
 	if (!texture_) {
 		SDL_DestroyRenderer(renderer_);

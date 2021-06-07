@@ -23,7 +23,7 @@ protected:
 
 	std::shared_ptr<Buffer<Pixel_format_BGR24>> buffer_;
 	std::unique_ptr<Mandelbrot_fractal_creator<Pixel_format_BGR24>> creator_;
-	std::unique_ptr<Base_app_window> window_;
+	std::unique_ptr<Base_app_window<Pixel_format_BGR24>> window_;
 	std::unique_ptr<File_save_dialog> save_dialog_;
 	std::unique_ptr<Base_writer<Pixel_format_BGR24>> writer_;
 

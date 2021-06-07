@@ -8,10 +8,15 @@ After cloning the repository or downloading its content, open the **Mandelbrot_f
 The executable file will be placed in the **build** directory created within the solution directory, in the subdirectory corresponding to the platform and configuration options selected. The dynamic library file necessary to run the program will be copied there as well.
 ## Using the program
 The program starts with creating and displaying the image of the main cardioid of the Mandelbrot set fractal scaled to fit the main window.
+
 To explore the details, point the mouse to the area that interests you and left-click to center on it. Than roll the mouse wheel forward or press the Up key on your keyboard to zoom into the area. To zoom out, roll the mouse wheel back or press the Down key. Once the maximum zoom is reached, you will be notified with a warning message.
+
 You may cycle through the available coloring palette themes by clicking the right mouse button. To reset the explorer to its starting position and default palette theme, press Ctrl-R on your keyboard.
-To save the current image to file, press Ctrl-S, then select destination directory and enter file name in the standard file save dialog that will appear. 
+
+To save the current image to file, press Ctrl-S, then select destination directory and enter file name in the standard file save dialog that will appear.
+
 To quit the program, press Ctrl-Q or close the main window.
+
 The above instructions are concisely summarized in the help box that can be called up by pressing F1 key.
 ## Credits
 The use of the following external libraries is gratefully acknowledged:

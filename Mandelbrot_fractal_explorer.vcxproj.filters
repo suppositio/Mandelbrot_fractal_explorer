@@ -21,13 +21,10 @@
     <ClCompile Include="src\App_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Mandelbrot_fractal_explorer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Writer.cpp">
+    <ClCompile Include="src\BGR24_writer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Mandelbrot_fractal_creator.cpp">
@@ -59,7 +56,7 @@
     <ClInclude Include="include\Mandelbrot_fractal_explorer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Writer.h">
+    <ClInclude Include="include\BGR24_writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Mandelbrot_fractal_creator.h">
@@ -83,9 +80,6 @@
     <ClInclude Include="include\Palette.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Base_theme.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Theme3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pixel_format_BGR24.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Base_writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

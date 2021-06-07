@@ -3,9 +3,10 @@
 
 namespace suppositio {
 
+template <typename Pix_t>
 class Base_palette {
 public:
-	virtual Buffer::Pixel get_image_pixel(int current_value) const = 0;
+	virtual typename Buffer<Pix_t>::Pixel get_image_pixel(int current_value) const = 0;
 	virtual ~Base_palette() = default;
 };
 

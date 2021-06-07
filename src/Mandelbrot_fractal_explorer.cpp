@@ -1,17 +1,18 @@
 #include "Mandelbrot_fractal_explorer.h"
 #include <SDL.h>
 #include "App_window.h"
+#include "BGR24_writer.h"
 #include "Error.h"
 
 namespace suppositio {
 
 Mandelbrot_fractal_explorer::Mandelbrot_fractal_explorer(int width, int height, double zoom_factor) :
 	width_{width}, height_{height}, zoom_factor_{zoom_factor},
-	buffer_{ new Buffer(width_, height_) },
-	creator_{ new Mandelbrot_fractal_creator(buffer_) },
-	window_{ new App_window(title_, buffer_) },
+	buffer_{ new Buffer<Pixel_format_BGR24>(width_, height_) },
+	creator_{ new Mandelbrot_fractal_creator<Pixel_format_BGR24>(buffer_) },
+	window_{ new App_window<Pixel_format_BGR24, SDL_PIXELFORMAT_BGR24>(title_, buffer_) },
 	save_dialog_{ new File_save_dialog("bmp") },
-	writer_{ new Writer(buffer_) }{
+	writer_{ new BGR24_writer(buffer_) }{
 	init();
 }
 

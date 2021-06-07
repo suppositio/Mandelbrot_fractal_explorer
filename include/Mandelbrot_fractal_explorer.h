@@ -1,10 +1,11 @@
 #pragma once
 #include <memory>
 #include "Base_app_window.h"
+#include "Base_writer.h"
 #include "Buffer.h"
 #include "File_save_dialog.h"
 #include "Mandelbrot_fractal_creator.h"
-#include "Writer.h"
+#include "Pixel_format_BGR24.h"
 
 namespace suppositio {
 
@@ -20,11 +21,11 @@ protected:
 	int height_;
 	double zoom_factor_;
 
-	std::shared_ptr<Buffer> buffer_;
-	std::unique_ptr<Mandelbrot_fractal_creator> creator_;
+	std::shared_ptr<Buffer<Pixel_format_BGR24>> buffer_;
+	std::unique_ptr<Mandelbrot_fractal_creator<Pixel_format_BGR24>> creator_;
 	std::unique_ptr<Base_app_window> window_;
 	std::unique_ptr<File_save_dialog> save_dialog_;
-	std::unique_ptr<Writer> writer_;
+	std::unique_ptr<Base_writer<Pixel_format_BGR24>> writer_;
 
 	bool quit_{ false };
 

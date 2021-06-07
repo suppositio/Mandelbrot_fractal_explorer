@@ -6,19 +6,22 @@
 #include <thread>
 #include "Error.h"
 #include "Palette.h"
+#include "Pixel_format_BGR24.h"
 #include "Theme1.h"
 #include "Theme2.h"
 #include "Theme3.h"
 
 namespace suppositio {
 
-Mandelbrot_fractal_creator::Mandelbrot_fractal_creator(const std::shared_ptr<Buffer>& buffer) :
+template <typename Pix_t>
+Mandelbrot_fractal_creator<Pix_t>::Mandelbrot_fractal_creator(const std::shared_ptr<Buffer<Pix_t>>& buffer) :
 	buffer_{ buffer }, width_{ buffer_->get_width() }, height_{ buffer_->get_height() },
 	palette_size_{ std::max(height_ / 2, width_ / 2) }, palette_list_{}, scale_stack_{} {
 	init();
 }
 
-void Mandelbrot_fractal_creator::reset() {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::reset() {
 	scale_stack_.clear();
 	center_ = { -0.5, 0.0 };
 	scale_ = std::min(3.0 / height_, 4.0 / width_);
@@ -27,13 +30,15 @@ void Mandelbrot_fractal_creator::reset() {
 	create_image();
 }
 
-void Mandelbrot_fractal_creator::pane(int col, int row) {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::pane(int col, int row) {
 	center_.x += (static_cast<Coord_t>(col) - static_cast<Coord_t>(width_) / 2) * scale_;
 	center_.y += (static_cast<Coord_t>(row) - static_cast<Coord_t>(height_) / 2) * scale_;
 	create_image();
 }
 
-void Mandelbrot_fractal_creator::zoom_in(double zoom_factor) {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::zoom_in(double zoom_factor) {
 	if (zoom_factor <= 0.0 || zoom_factor > 1.0) {
 		throw Fatal_error("Invalid zoom factor value.");
 	}
@@ -48,7 +53,8 @@ void Mandelbrot_fractal_creator::zoom_in(double zoom_factor) {
 	create_image();
 }
 
-void Mandelbrot_fractal_creator::zoom_out() {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::zoom_out() {
 	if (!scale_stack_.empty()) {
 		scale_ = scale_stack_.back();
 		scale_stack_.pop_back();
@@ -57,32 +63,37 @@ void Mandelbrot_fractal_creator::zoom_out() {
 	}
 }
 
-void Mandelbrot_fractal_creator::change_palette() {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::change_palette() {
 	if (++current_palette_ == palette_list_.end()) {
 		current_palette_ = palette_list_.begin();
 	}
 	create_image();
 }
 
-void Mandelbrot_fractal_creator::init() {
-	palette_list_.emplace_back(std::make_unique<Palette<Theme1>>(Palette<Theme1>(palette_size_)));
-	palette_list_.emplace_back(std::make_unique<Palette<Theme2>>(Palette<Theme2>(palette_size_)));
-	palette_list_.emplace_back(std::make_unique<Palette<Theme3>>(Palette<Theme3>(palette_size_)));
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::init() {
+	palette_list_.emplace_back(std::make_unique<Palette<Pix_t, Theme1>>(Palette<Pix_t, Theme1>(palette_size_)));
+	palette_list_.emplace_back(std::make_unique<Palette<Pix_t, Theme2>>(Palette<Pix_t, Theme2>(palette_size_)));
+	palette_list_.emplace_back(std::make_unique<Palette<Pix_t, Theme3>>(Palette<Pix_t, Theme3>(palette_size_)));
 	reset();
 }
 
-void Mandelbrot_fractal_creator::update_max_iterations() {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::update_max_iterations() {
 	max_iterations_ = palette_size_ * std::log(1 / scale_) + 2;
 }
 
-Mandelbrot_fractal_creator::World_coords Mandelbrot_fractal_creator::image_to_world(int col, int row) {
+template <typename Pix_t>
+typename Mandelbrot_fractal_creator<Pix_t>::World_coords Mandelbrot_fractal_creator<Pix_t>::image_to_world(int col, int row) {
 	World_coords coords;
 	coords.x = (static_cast<Coord_t>(col) - static_cast<Coord_t>(width_) / 2) * scale_ + center_.x;
 	coords.y = (static_cast<Coord_t>(row) - static_cast<Coord_t>(height_) / 2) * scale_ + center_.y;
 	return coords;
 }
 
-int Mandelbrot_fractal_creator::iterations(World_coords coords) {
+template <typename Pix_t>
+int Mandelbrot_fractal_creator<Pix_t>::iterations(World_coords coords) {
 	int iterations{ 0 };
 	std::complex<Coord_t> z{ 0 };
 	std::complex<Coord_t> c{ coords.x, coords.y };
@@ -95,7 +106,8 @@ int Mandelbrot_fractal_creator::iterations(World_coords coords) {
 		iterations - std::log((std::log(z.real() * z.real() + z.imag() * z.imag()) / ln2) / ln2));
 }
 
-void Mandelbrot_fractal_creator::create_image_part(int row_begin, int row_end) {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::create_image_part(int row_begin, int row_end) {
 	for (int row{ row_begin }; row < row_end; ++row) {
 		for (int col{ 0 }; col < width_; ++col) {
 			World_coords coords = image_to_world(col, row);
@@ -104,13 +116,14 @@ void Mandelbrot_fractal_creator::create_image_part(int row_begin, int row_end) {
 				buffer_->set_pixel(col, row, (*current_palette_)->get_image_pixel(iters));
 			}
 			else {
-				buffer_->set_pixel(col, row, { 0, 0, 0 });
+				buffer_->set_pixel(col, row, Buffer<Pix_t>::Pixel());
 			}
 		}
 	}
 }
 
-void Mandelbrot_fractal_creator::create_image() {
+template <typename Pix_t>
+void Mandelbrot_fractal_creator<Pix_t>::create_image() {
 	int num_workers = std::thread::hardware_concurrency();
 	int rows_per_worker = height_ / num_workers;
 	std::vector<std::thread> workers;
@@ -126,5 +139,7 @@ void Mandelbrot_fractal_creator::create_image() {
 	}
 	buffer_->set_need_redraw(true);
 }
+
+template class Mandelbrot_fractal_creator<Pixel_format_BGR24>;
 
 } // suppositio

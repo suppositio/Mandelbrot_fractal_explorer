@@ -205,24 +205,24 @@
     <ClCompile Include="src\Theme2.cpp" />
     <ClCompile Include="src\Theme1.cpp" />
     <ClCompile Include="src\Mandelbrot_fractal_creator.cpp" />
-    <ClCompile Include="src\Writer.cpp" />
+    <ClCompile Include="src\BGR24_writer.cpp" />
     <ClCompile Include="src\Mandelbrot_fractal_explorer.cpp" />
-    <ClCompile Include="src\Buffer.cpp" />
     <ClCompile Include="src\App_window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Theme3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Base_writer.h" />
     <ClInclude Include="include\Fatal_error_handler.h" />
     <ClInclude Include="include\Error.h" />
-    <ClInclude Include="include\Base_theme.h" />
     <ClInclude Include="include\Base_app_window.h" />
     <ClInclude Include="include\File_save_dialog.h" />
+    <ClInclude Include="include\Pixel_format_BGR24.h" />
     <ClInclude Include="include\Theme2.h" />
     <ClInclude Include="include\Theme1.h" />
     <ClInclude Include="include\Base_palette.h" />
     <ClInclude Include="include\Mandelbrot_fractal_creator.h" />
-    <ClInclude Include="include\Writer.h" />
+    <ClInclude Include="include\BGR24_writer.h" />
     <ClInclude Include="include\Mandelbrot_fractal_explorer.h" />
     <ClInclude Include="include\App_window.h" />
     <ClInclude Include="include\Buffer.h" />

@@ -6,10 +6,11 @@
 
 namespace suppositio {
 
+template <typename Pix_t> 
 class Mandelbrot_fractal_creator {
 public:
 	using Coord_t = double;
-	Mandelbrot_fractal_creator(const std::shared_ptr<Buffer>& buffer);
+	Mandelbrot_fractal_creator(const std::shared_ptr<Buffer<Pix_t>>& buffer);
 	void reset();
 	void pane(int col, int row);
 	void zoom_in(double zoom_factor);
@@ -22,14 +23,14 @@ protected:
 		Coord_t y;
 	};
 
-	std::shared_ptr<Buffer> buffer_;
+	std::shared_ptr<Buffer<Pix_t>> buffer_;
 	int width_;
 	int height_;
-	std::vector<std::unique_ptr<Base_palette>> palette_list_;
+	std::vector<std::unique_ptr<Base_palette<Pix_t>>> palette_list_;
 	std::vector<Coord_t> scale_stack_;
 
 	int palette_size_;
-	std::vector<std::unique_ptr<Base_palette>>::iterator current_palette_;
+	typename std::vector<std::unique_ptr<Base_palette<Pix_t>>>::iterator current_palette_;
 
 	World_coords center_;
 	Coord_t scale_;

@@ -34,7 +34,7 @@ void BGR24_writer::write(const std::string& file_name) {
 	Bitmap_info_header bmp_info_header;
 	bmp_file_header.file_size = sizeof(bmp_file_header) +
 		sizeof(bmp_info_header) +
-		width_ * height_ * sizeof(Buffer<Pixel_format_BGR24>::Pixel);
+		width_ * height_ * sizeof(Pixel_format_BGR24);
 	bmp_file_header.data_offset = sizeof(bmp_file_header) + sizeof(bmp_info_header);
 	bmp_info_header.width = width_;
 	bmp_info_header.height = height_;
@@ -48,12 +48,10 @@ void BGR24_writer::write(const std::string& file_name) {
 	file.write(reinterpret_cast<char*>(&bmp_file_header), sizeof(bmp_file_header));
 	file.write(reinterpret_cast<char*>(&bmp_info_header), sizeof(bmp_info_header));
 	for (int i{ height_ - 1 }; i >= 0; --i) {
-		file.write(reinterpret_cast<const char*>(buffer_->get_raw()) + i * width_ * sizeof(Buffer<Pixel_format_BGR24>::Pixel),
-			width_ * sizeof(Buffer<Pixel_format_BGR24>::Pixel));
-//		file.write(buffer_raw() + i * width_ * sizeof(Buffer<Pixel_format_BGR24>::Pixel),
-//			width_ * sizeof(Buffer<Pixel_format_BGR24>::Pixel));
-
+		file.write(reinterpret_cast<const char*>(buffer_->get_raw()) + i * width_ * sizeof(Pixel_format_BGR24),
+			width_ * sizeof(Pixel_format_BGR24));
 	}
+
 	file.close();
 	if (!file) {
 		throw Non_fatal_error("Failed to close file:\n" + file_name);

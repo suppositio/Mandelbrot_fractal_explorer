@@ -17,10 +17,6 @@ protected:
 	std::shared_ptr<Buffer<Pix_t>> buffer_;
 	int width_;
 	int height_;
-
-//	const char* buffer_raw() {
-//		return reinterpret_cast<const char*>(buffer_->get_raw());
-//	}
 };
 
 } // suppositio

@@ -116,7 +116,7 @@ void Mandelbrot_fractal_creator<Pix_t>::create_image_part(int row_begin, int row
 				buffer_->set_pixel(col, row, (*current_palette_)->get_image_pixel(iters));
 			}
 			else {
-				buffer_->set_pixel(col, row, Buffer<Pix_t>::Pixel());
+				buffer_->set_pixel(col, row, Pix_t());
 			}
 		}
 	}

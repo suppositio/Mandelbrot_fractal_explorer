@@ -12,7 +12,7 @@ App_window<Pix_t, Pix_f>::App_window(const std::string& title, const std::shared
 
 template <typename Pix_t, uint32_t Pix_f>
 void App_window<Pix_t, Pix_f>::draw() {
-	SDL_UpdateTexture(texture_, nullptr, buffer_->get_raw(), width_ * sizeof(Buffer<Pix_t>::Pixel));
+	SDL_UpdateTexture(texture_, nullptr, buffer_->get_raw(), width_ * sizeof(Pix_t));
 	SDL_RenderClear(renderer_);
 	SDL_RenderCopy(renderer_, texture_, nullptr, nullptr);
 	SDL_RenderPresent(renderer_);

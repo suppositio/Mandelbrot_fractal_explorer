@@ -14,7 +14,7 @@ public:
 		init();
 	}
 
-	virtual typename Buffer<Pix_t>::Pixel get_image_pixel(int current_value) const override {
+	virtual Pix_t get_image_pixel(int current_value) const override {
 		return colors_.at(current_value % max_value_);
 	}
 
@@ -23,7 +23,7 @@ public:
 protected:
 	Th theme_;
 	int max_value_;
-	std::vector <typename Buffer<Pix_t>::Pixel> colors_;
+	std::vector <Pix_t> colors_;
 
 	void init() {
 		for (int i{ 0 }; i < max_value_; ++i) {

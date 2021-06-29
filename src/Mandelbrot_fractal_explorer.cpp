@@ -8,11 +8,11 @@ namespace suppositio {
 
 Mandelbrot_fractal_explorer::Mandelbrot_fractal_explorer(int width, int height, double zoom_factor) :
 	width_{width}, height_{height}, zoom_factor_{zoom_factor},
-	buffer_{ new Buffer<Pixel_format_BGR24>(width_, height_) },
-	creator_{ new Mandelbrot_fractal_creator<Pixel_format_BGR24>(buffer_) },
-	window_{ new App_window<Pixel_format_BGR24, SDL_PIXELFORMAT_BGR24>(title_, buffer_) },
-	save_dialog_{ new File_save_dialog("bmp") },
-	writer_{ new BGR24_writer(buffer_) }{
+	buffer_{ std::make_shared<Buffer<Pixel_format_BGR24>>(width_, height_) },
+	creator_{ std::make_unique<Mandelbrot_fractal_creator<Pixel_format_BGR24>>(buffer_) },
+	window_{ std::make_unique<App_window<Pixel_format_BGR24, SDL_PIXELFORMAT_BGR24>>(title_, buffer_) },
+	save_dialog_{ std::make_unique<File_save_dialog>("bmp") },
+	writer_{ std::make_unique<BGR24_writer>(buffer_) }{
 	init();
 }
 

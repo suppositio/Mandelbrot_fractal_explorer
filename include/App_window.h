@@ -16,9 +16,9 @@ public:
 	virtual ~App_window();
 protected:
 
-	SDL_Window* window_{ nullptr };
-	SDL_Renderer* renderer_{ nullptr };
-	SDL_Texture* texture_{ nullptr };
+	std::unique_ptr<SDL_Window, void (*)(SDL_Window*)> window_{nullptr, SDL_DestroyWindow};
+	std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)> renderer_{nullptr, SDL_DestroyRenderer};
+	std::unique_ptr<SDL_Texture, void (*)(SDL_Texture*)> texture_{nullptr, SDL_DestroyTexture};
 
 	void init();
 };

@@ -12,23 +12,20 @@ App_window<Pix_t, Pix_f>::App_window(const std::string& title, const std::shared
 
 template <typename Pix_t, uint32_t Pix_f>
 void App_window<Pix_t, Pix_f>::draw() {
-	SDL_UpdateTexture(texture_, nullptr, this->buffer_->get_raw(), this->width_ * sizeof(Pix_t));
-	SDL_RenderClear(renderer_);
-	SDL_RenderCopy(renderer_, texture_, nullptr, nullptr);
-	SDL_RenderPresent(renderer_);
+	SDL_UpdateTexture(texture_.get(), nullptr, this->buffer_->get_raw(), this->width_ * sizeof(Pix_t));
+	SDL_RenderClear(renderer_.get());
+	SDL_RenderCopy(renderer_.get(), texture_.get(), nullptr, nullptr);
+	SDL_RenderPresent(renderer_.get());
 	this->buffer_->set_need_redraw(false);
 }
 
 template <typename Pix_t, uint32_t Pix_f>
 void App_window<Pix_t, Pix_f>::show_message(uint32_t flags, const std::string& title, const std::string& message) {
-	SDL_ShowSimpleMessageBox(flags, title.c_str(), message.c_str(), window_);
+	SDL_ShowSimpleMessageBox(flags, title.c_str(), message.c_str(), window_.get());
 }
 
 template <typename Pix_t, uint32_t Pix_f>
 App_window<Pix_t, Pix_f>::~App_window() {
-	SDL_DestroyTexture(texture_);
-	SDL_DestroyRenderer(renderer_);
-	SDL_DestroyWindow(window_);
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	SDL_Quit();
 }
@@ -39,37 +36,43 @@ void App_window<Pix_t, Pix_f>::init() {
 		throw Fatal_error("Failed to initialize video subsystem.");
 	}
 
-	window_ = SDL_CreateWindow(
+	window_ = std::unique_ptr<SDL_Window, void (*)(SDL_Window*)>
+		(SDL_CreateWindow(
 		this->title_.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		this->width_,
 		this->height_,
-		SDL_WINDOW_SHOWN);
+		SDL_WINDOW_SHOWN),
+		SDL_DestroyWindow);
 
 	if (!window_) {
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		throw Fatal_error("Failed to create application window.");
 	}
 
-	renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_PRESENTVSYNC);
+	renderer_ = std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)>
+		(SDL_CreateRenderer(
+		window_.get(),
+		-1,
+		SDL_RENDERER_PRESENTVSYNC),
+		SDL_DestroyRenderer);
 
 	if (!renderer_) {
-		SDL_DestroyWindow(window_);
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		throw Fatal_error("Failed to create renderer.");
 	}
 
-	texture_ = SDL_CreateTexture(
-		renderer_,
+	texture_ = std::unique_ptr<SDL_Texture, void (*)(SDL_Texture*)>
+		(SDL_CreateTexture(
+		renderer_.get(),
 		Pix_f,
 		SDL_TEXTUREACCESS_STATIC,
 		this->width_,
-		this->height_);
+		this->height_),
+		SDL_DestroyTexture);
 
 	if (!texture_) {
-		SDL_DestroyRenderer(renderer_);
-		SDL_DestroyWindow(window_);
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		throw Fatal_error("Failed to create texture.");
 	}

@@ -20,8 +20,13 @@ void App_window<Pix_t, Pix_f>::draw() {
 }
 
 template <typename Pix_t, uint32_t Pix_f>
-void App_window<Pix_t, Pix_f>::show_message(uint32_t flags, const std::string& title, const std::string& message) {
-	SDL_ShowSimpleMessageBox(flags, title.c_str(), message.c_str(), window_.get());
+void App_window<Pix_t, Pix_f>::show_message(const std::string& title, const std::string& message) {
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title.c_str(), message.c_str(), window_.get());
+}
+
+template <typename Pix_t, uint32_t Pix_f>
+void App_window<Pix_t, Pix_f>::show_warning(const std::string& title, const std::string& message) {
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title.c_str(), message.c_str(), window_.get());
 }
 
 template <typename Pix_t, uint32_t Pix_f>

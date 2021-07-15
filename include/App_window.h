@@ -12,7 +12,8 @@ class App_window : public Base_app_window<Pix_t> {
 public:
 	App_window(const std::string& title, const std::shared_ptr<Buffer<Pix_t>>& buffer);
 	virtual void draw() override;
-	virtual void show_message(uint32_t flags, const std::string& title, const std::string& message) override;
+	virtual void show_message(const std::string& title, const std::string& message) override;
+	virtual void show_warning(const std::string& title, const std::string& message) override;
 	virtual ~App_window();
 protected:
 

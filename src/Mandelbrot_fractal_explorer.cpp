@@ -68,7 +68,7 @@ void Mandelbrot_fractal_explorer::loop() {
 			process_events();
 		}
 		catch (Non_fatal_error& nfe) {
-			window_->show_message(SDL_MESSAGEBOX_WARNING, "Warning", nfe.what());
+			window_->show_warning("Warning", nfe.what());
 		}
 		if (quit_) {
 			break;
@@ -115,7 +115,7 @@ void Mandelbrot_fractal_explorer::write_image() {
 }
 
 void Mandelbrot_fractal_explorer::show_welcome() {
-	window_->show_message(SDL_MESSAGEBOX_INFORMATION,
+	window_->show_message(
 		"Welcome!",
 		std::string(title_)+"\n\n"
 		"Copyright (C) suppositio 2021.\n\n"
@@ -124,7 +124,7 @@ void Mandelbrot_fractal_explorer::show_welcome() {
 }
 
 void Mandelbrot_fractal_explorer::show_help() {
-	window_->show_message(SDL_MESSAGEBOX_INFORMATION,
+	window_->show_message(
 		"Help",
 		"For best results, start exploring near the edges of solid black areas.\n\n"
 		"- Center on an image point : mouse point + left click.\n"
